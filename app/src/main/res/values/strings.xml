@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Popup Video</string>
+
+    <!-- EntryPoint -->
+    <string name="toast_appNotFound">The package \'%s\' can\'t be opened.</string>
+    <string name="toast_noapps">No apps available</string>
+    <string name="toast_nochooser">Can\'t open chooser</string>
+    <string name="title_chooser">Choose app</string>
+
+    <!-- MainActivity -->
+    <string name="txt_about">App created by TrianguloY</string>
+    <string name="spinner_none">None</string>
+    <string name="desc_app">Choose what app to open. Note: if one is specified and you set this app as the default, it will show a chooser to choose between opening as popup or not.</string>
+    <string name="desc_fullscreen">Display videos in fullscreen (landscape only)</string>
+    <string name="chx_fullscreen">Full screen</string>
+
+</resources>
