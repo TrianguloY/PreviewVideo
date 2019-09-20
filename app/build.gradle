@@ -10,8 +10,21 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.assembleProvider.get().doLast {
+            if (variant.mappingFile != null && variant.mappingFile.exists()) {
+                def outputDir = null
+                variant.outputs.each { output ->
+                    outputDir = output.outputFile.parent
+                }
+                def mappingFilename = new File(outputDir, variant.mappingFile.name)
+                mappingFilename.delete()
+                variant.mappingFile.renameTo(mappingFilename)
+            }
         }
     }
 }

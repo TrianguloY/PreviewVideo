@@ -8,10 +8,29 @@
     <string name="title_chooser">Choose app</string>
 
     <!-- MainActivity -->
-    <string name="txt_about">App created by TrianguloY</string>
+    <string name="a_about">About</string>
+    <string name="txt_about">"With this app you can open YouTube videos as an immobile popup on the middle of the screen that is closed automatically when the video ends, or can be closed with a single click on the back button.
+
+App created by TrianguloY.
+
+Notice: This app is not affiliated with YouTube nor Google. This is a third party app that uses the YouTube Api and doesn't replace any of the YouTube features."</string>
+    <string name="toast_noBrowser">Can\'t open the browser</string>
+    <string name="btn_appPage">Open app page</string>
+    <string name="btn_openStore">Open Play store</string>
+    <string name="abt_shareStore">Share app</string>
+
+    <string name="a_setup">Setup</string>
+    <string name="txt_setAsDefault">(!) This app is currently not shown when opening Youtube Links. To be able to select this app when pressing YouTube links press the button below and enable the \'open links in this app\' setting.</string>
+    <string name="btn_setAsDefault">Android settings</string>
+    <string name="toast_noSettings">Can\'t open the Android settings</string>
+    <string name="desc_app">Choose what app to open. Note: if this app is set as the default for YouTube links it will show a dialog to choose between opening as popup or not.</string>
     <string name="spinner_none">None</string>
-    <string name="desc_app">Choose what app to open. Note: if one is specified and you set this app as the default, it will show a chooser to choose between opening as popup or not.</string>
-    <string name="desc_fullscreen">Display videos in fullscreen (landscape only)</string>
-    <string name="chx_fullscreen">Full screen</string>
+    <string name="desc_fullscreen">Display videos in landscape fullscreen instead.</string>
+    <string name="chx_fullscreen">Landscape fullscreen</string>
+    <string name="txt_testLink">Example video: Click the link to test the app (the video is just the default Youtube logo).</string>
+    <string name="txtL_testLink">https://www.youtube.com/watch?v=Y7dpJ0oseIA</string>
+
+    <!-- General -->
+    <string name="toast_error">An error occurred</string>
 
 </resources>

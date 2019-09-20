@@ -1,4 +1,4 @@
-package com.trianguloy.popupvideo;
+package com.trianguloy.popupvideo.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
  * Class to store and retrieve preferences
  * Sort of a wrapper of SharedPreferences
  */
-class Preferences {
+public class Preferences {
 
     //the android SharedPreferences
     private static final String PREF_NAME = "pref";
@@ -18,7 +18,7 @@ class Preferences {
      *
      * @param context the context from where load the SharedPreferences class
      */
-    Preferences(Context context) {
+    public Preferences(Context context) {
         preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
@@ -28,14 +28,14 @@ class Preferences {
      * App selected: what to open, null if choose
      */
     private static final String KEY_APP = "app";
-    private static final String DEFAULT_APP = null;
+    private static final String DEFAULT_APP = "com.google.android.youtube";
 
     /**
      * Getter for the app
      *
      * @return the app
      */
-    String getApp() {
+    public String getApp() {
         return preferences.getString(KEY_APP, DEFAULT_APP);
     }
 
@@ -44,7 +44,7 @@ class Preferences {
      *
      * @param app the new selected app, null to choose
      */
-    void setApp(String app) {
+    public void setApp(String app) {
         preferences.edit().putString(KEY_APP, app).apply();
     }
 
@@ -60,7 +60,7 @@ class Preferences {
      *
      * @return if fullscreen
      */
-    boolean getFullScreen() {
+    public boolean getFullScreen() {
         return preferences.getBoolean(KEY_FULLSCREEN, DEFAULT_FULLSCREEN);
     }
 
@@ -69,7 +69,7 @@ class Preferences {
      *
      * @param fullscreen if fullscreen
      */
-    void setFullscreen(boolean fullscreen) {
+    public void setFullscreen(boolean fullscreen) {
         preferences.edit().putBoolean(KEY_FULLSCREEN, fullscreen).apply();
     }
 }

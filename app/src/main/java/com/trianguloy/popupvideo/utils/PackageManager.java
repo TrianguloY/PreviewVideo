@@ -1,14 +1,15 @@
-package com.trianguloy.popupvideo;
+package com.trianguloy.popupvideo.utils;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Parcelable;
+import android.widget.Toast;
+
+import com.trianguloy.popupvideo.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * Utilities for packages
  */
-public class Packages {
+public class PackageManager {
 
     public static final Intent YOUTUBE_INTENT = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=00000000000"));
 
@@ -49,13 +50,13 @@ public class Packages {
      */
     static public List<PackageInfo> getOtherApps(Intent intent, boolean all, Context cntx) {
         // vars
-        PackageManager pm = cntx.getPackageManager();
+        android.content.pm.PackageManager pm = cntx.getPackageManager();
 
         // query activities
         List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent,
                 all
-                        ? (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M ? PackageManager.MATCH_ALL : 0)
-                        : PackageManager.MATCH_DEFAULT_ONLY
+                        ? (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M ? android.content.pm.PackageManager.MATCH_ALL : 0)
+                        : android.content.pm.PackageManager.MATCH_DEFAULT_ONLY
         );
 
         // remove ours (if found), and convert to PackageInfo list
@@ -73,14 +74,12 @@ public class Packages {
     }
 
     /**
-     * Returns the intent chooser for apps except ours.
-     *
-     * @param intent intent to open when the apps are clicked, used for query too
-     * @param cntx   base context
-     * @return the intent chooser, or null if no apps can open the intent
+     * Returns a list of intents to open the specific intent for a chooser
+     * @param intent intent to open
+     * @param cntx bsae context
+     * @return list of intents to use with a chooser
      */
-    static public Intent chooserForOtherApps(Intent intent, Context cntx) {
-
+    static public List<Intent> intentsForOtherApps(Intent intent, Context cntx){
         // get apps
         List<PackageInfo> otherApps = getOtherApps(intent, true, cntx);
 
@@ -89,27 +88,21 @@ public class Packages {
             return null;
         }
 
-        // create intent for the chooser
+        // create intents for the chooser
         List<Intent> intents = new ArrayList<>(otherApps.size());
         for (PackageInfo otherApp : otherApps) {
             intents.add(new Intent(intent).setPackage(otherApp.packageName));
         }
 
-        // create chooser
-        Intent chooserIntent = Intent.createChooser( intents.get(0), cntx.getString(R.string.title_chooser));
-        intents.remove(0);
-        chooserIntent.putExtra( Intent.EXTRA_INITIAL_INTENTS, intents.toArray(new Parcelable[0]));
-
-        // return
-        return chooserIntent;
+        return intents;
     }
 
     /**
      * @return true iff we are the default app for youtube links
      */
-    static public boolean areWeTheDefault(Activity cntx){
+    static public boolean amITheDefault(Activity cntx){
         // vars
-        PackageManager pm = cntx.getPackageManager();
+        android.content.pm.PackageManager pm = cntx.getPackageManager();
 
         ResolveInfo resolveInfo = pm.resolveActivity(new Intent(cntx.getIntent()).setComponent(null), 0);
         return resolveInfo != null
@@ -119,6 +112,43 @@ public class Packages {
                 ;
     }
 
+    /**
+     * Returns whether we are available for a youtube link
+     * @param cntx base context
+     * @return true if we are available, false otherwise
+     */
+    static public boolean amIAvailable(Activity cntx){
+        // vars
+        android.content.pm.PackageManager pm = cntx.getPackageManager();
+
+        // query activities
+        List<ResolveInfo> resolveInfos = pm.queryIntentActivities(YOUTUBE_INTENT, android.content.pm.PackageManager.MATCH_DEFAULT_ONLY );
+
+        // find ours
+        String ourPackage = cntx.getPackageName();
+
+        for (ResolveInfo resolveInfo : resolveInfos) {
+            ActivityInfo activityInfo = resolveInfo.activityInfo;
+            if (activityInfo != null && activityInfo.packageName != null && activityInfo.packageName.equals(ourPackage)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Wrapper for startActivity to catch ActivityNotFoundException
+     * @param intent intent to open
+     * @param string toast shown on ActivityNotFoundException
+     * @param cntx base context
+     */
+    static public void startActivity(Intent intent, int string ,Context cntx){
+        try {
+            cntx.startActivity(intent);
+        }catch (ActivityNotFoundException e){
+            Toast.makeText(cntx, string, Toast.LENGTH_SHORT).show();
+        }
+    }
 
 //            String resolvePackage = pm.resolveActivity(intent, 0).activityInfo.packageName;
 
