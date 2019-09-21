@@ -19,32 +19,41 @@
 
         <Button
             android:id="@+id/abt_btn_appPage"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/padding"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/padding"
-            android:layout_marginRight="@dimen/padding"
+            android:drawableLeft="@android:drawable/ic_menu_set_as"
+            android:drawablePadding="@dimen/padding"
             android:onClick="onButtonClick"
+            android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding"
             android:text="@string/btn_appPage" />
 
         <Button
             android:id="@+id/abt_btn_openStore"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/padding"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/padding"
-            android:layout_marginRight="@dimen/padding"
+            android:drawableLeft="@android:drawable/ic_media_play"
+            android:drawablePadding="@dimen/padding"
             android:onClick="onButtonClick"
+            android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding"
             android:text="@string/btn_openStore" />
 
         <Button
             android:id="@+id/abt_btn_shareStore"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/padding"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/padding"
-            android:layout_marginRight="@dimen/padding"
+            android:drawableLeft="@android:drawable/ic_menu_share"
+            android:drawablePadding="@dimen/padding"
             android:onClick="onButtonClick"
+            android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding"
             android:text="@string/abt_shareStore" />
     </LinearLayout>
 </ScrollView>

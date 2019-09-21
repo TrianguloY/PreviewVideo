@@ -60,7 +60,7 @@ public class EntryPoint extends Activity {
 
         //logic
         if (PackageManager.amITheDefault(this) && !getIntent().hasExtra(FINISH_ON_ENDED)) {
-            // we are the default app (and first time opened), let the user choose open as popup or not
+            // we are the default app (and first time opened), let the user choose open as preview or not
 
             Intent chooser = Intent.createChooser(new Intent(convertedIntent).setPackage(getPackageName()), getString(R.string.title_chooser));
 

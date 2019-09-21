@@ -29,6 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onButtonClick"
+                android:paddingLeft="@dimen/padding"
+                android:paddingRight="@dimen/padding"
                 android:text="@string/btn_setAsDefault" />
 
             <ImageView
@@ -91,6 +93,7 @@
             android:id="@+id/stp_txtL_testLink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:onClick="onClick"
             android:paddingTop="@dimen/padding"
             android:paddingBottom="@dimen/padding"

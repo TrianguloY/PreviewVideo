@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.trianguloy.popupvideo.BuildConfig;
 import com.trianguloy.popupvideo.R;
 import com.trianguloy.popupvideo.utils.PackageManager;
 import com.trianguloy.popupvideo.utils.Preferences;
@@ -93,7 +94,9 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
         // set the none option
         otherApps.add(0, new PackageManager.PackageInfo(null, getString(R.string.spinner_none)));
 
-        otherApps.add(new PackageManager.PackageInfo("invalid", "invalid"));
+        // for debug only: set the invalid option
+        if (BuildConfig.DEBUG)
+            otherApps.add(new PackageManager.PackageInfo("invalid", "invalid"));
 
         // initialize adapter
         ArrayAdapter<PackageManager.PackageInfo> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, otherApps);

@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
                 cls = AboutActivity.class;
                 break;
             case R.id.m_img_icon:
-                Toast.makeText(this, "Popup Video, by TrianguloY", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.app_name) + ", by TrianguloY", Toast.LENGTH_SHORT).show();
                 return;
             default:
                 Log.d("SWITCH", view.toString());

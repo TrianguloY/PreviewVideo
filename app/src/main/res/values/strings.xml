@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Popup Video</string>
+    <string name="app_name">Preview Video</string>
 
     <!-- EntryPoint -->
     <string name="toast_appNotFound">The package \'%s\' can\'t be opened.</string>
@@ -23,7 +23,7 @@ Notice: This app is not affiliated with YouTube nor Google. This is a third part
     <string name="txt_setAsDefault">(!) This app is currently not shown when opening Youtube Links. To be able to select this app when pressing YouTube links press the button below and enable the \'open links in this app\' setting.</string>
     <string name="btn_setAsDefault">Android settings</string>
     <string name="toast_noSettings">Can\'t open the Android settings</string>
-    <string name="desc_app">Choose what app to open. Note: if this app is set as the default for YouTube links it will show a dialog to choose between opening as popup or not.</string>
+    <string name="desc_app">Choose what app to open. Note: if this app is set as the default for YouTube links it will show a dialog to choose between opening as preview or not.</string>
     <string name="spinner_none">None</string>
     <string name="desc_fullscreen">Display videos in landscape fullscreen instead.</string>
     <string name="chx_fullscreen">Landscape fullscreen</string>
