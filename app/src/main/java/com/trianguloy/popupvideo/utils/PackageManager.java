@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class PackageManager {
 
-    public static final Intent YOUTUBE_INTENT = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=00000000000"));
+    public static final Intent YOUTUBE_INTENT = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=00000000000"));
 
     /**
      * The info about packages, struct
@@ -39,6 +39,8 @@ public class PackageManager {
             return label;
         }
     }
+
+    // ------------------- Functions -------------------
 
     /**
      * Returns a list of all the apps that can open the intent, without including ours
@@ -75,11 +77,12 @@ public class PackageManager {
 
     /**
      * Returns a list of intents to open the specific intent for a chooser
+     *
      * @param intent intent to open
-     * @param cntx bsae context
+     * @param cntx   bsae context
      * @return list of intents to use with a chooser
      */
-    static public List<Intent> intentsForOtherApps(Intent intent, Context cntx){
+    static public List<Intent> intentsForOtherApps(Intent intent, Context cntx) {
         // get apps
         List<PackageInfo> otherApps = getOtherApps(intent, true, cntx);
 
@@ -98,9 +101,9 @@ public class PackageManager {
     }
 
     /**
-     * @return true iff we are the default app for youtube links
+     * @return true iff we are the default app for the intent that opened us (so we were called directly)
      */
-    static public boolean amITheDefault(Activity cntx){
+    static public boolean amITheDefault(Activity cntx) {
         // vars
         android.content.pm.PackageManager pm = cntx.getPackageManager();
 
@@ -114,15 +117,16 @@ public class PackageManager {
 
     /**
      * Returns whether we are available for a youtube link
+     *
      * @param cntx base context
      * @return true if we are available, false otherwise
      */
-    static public boolean amIAvailable(Activity cntx){
+    static public boolean amIAvailable(Context cntx) {
         // vars
         android.content.pm.PackageManager pm = cntx.getPackageManager();
 
         // query activities
-        List<ResolveInfo> resolveInfos = pm.queryIntentActivities(YOUTUBE_INTENT, android.content.pm.PackageManager.MATCH_DEFAULT_ONLY );
+        List<ResolveInfo> resolveInfos = pm.queryIntentActivities(YOUTUBE_INTENT, android.content.pm.PackageManager.MATCH_DEFAULT_ONLY);
 
         // find ours
         String ourPackage = cntx.getPackageName();
@@ -136,16 +140,50 @@ public class PackageManager {
         return false;
     }
 
+    static public PackageInfo isOtherApp(Context cntx) {
+        try {
+            // vars
+            android.content.pm.PackageManager pm = cntx.getPackageManager();
+
+            ResolveInfo resolveInfo = pm.resolveActivity(YOUTUBE_INTENT, android.content.pm.PackageManager.MATCH_DEFAULT_ONLY);
+            if (resolveInfo == null) {
+                // No activity? strange
+                return null;
+            }
+
+            ActivityInfo activityInfo = resolveInfo.activityInfo;
+            String packageName = activityInfo.packageName;
+
+            if (packageName.equals(cntx.getPackageName())) {
+                // We are the default, isn't other app
+                return null;
+            }
+
+            if (packageName.equals(pm.resolveActivity(Intent.createChooser(YOUTUBE_INTENT, ""), 0).activityInfo.packageName)) {
+                // There is no default
+                return null;
+            }
+
+            // is other app
+            return new PackageInfo(packageName, activityInfo.loadLabel(pm).toString());
+
+        } catch (NullPointerException npe) {
+            // something was missing? strange
+            return null;
+        }
+    }
+
     /**
      * Wrapper for startActivity to catch ActivityNotFoundException
+     *
      * @param intent intent to open
      * @param string toast shown on ActivityNotFoundException
-     * @param cntx base context
+     * @param cntx   base context
      */
-    static public void startActivity(Intent intent, int string ,Context cntx){
+    static public void startActivity(Intent intent, int string, Context cntx) {
         try {
             cntx.startActivity(intent);
-        }catch (ActivityNotFoundException e){
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(cntx, string, Toast.LENGTH_SHORT).show();
         }
     }

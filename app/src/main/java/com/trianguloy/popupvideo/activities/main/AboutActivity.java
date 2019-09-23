@@ -20,12 +20,15 @@ public class AboutActivity extends Activity {
     public void onButtonClick(View view) {
         switch (view.getId()){
             case R.id.abt_btn_appPage:
+                // Open the app page (blog)
                 PackageManager.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://triangularapps.blogspot.com/")), R.string.toast_noBrowser, this);
                 break;
             case R.id.abt_btn_openStore:
+                // Open the Play Store
                 PackageManager.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())), R.string.toast_noBrowser, this);
                 break;
             case R.id.abt_btn_shareStore:
+                // Share the play store
                 Intent share = new Intent(android.content.Intent.ACTION_SEND);
                 share.setType("text/plain");
                 share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);

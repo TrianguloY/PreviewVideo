@@ -37,8 +37,26 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
         initFullScreen();
         initClickable();
         checkAvailability();
+        checkOpener();
     }
 
+    /**
+     * Checks which app is the default
+     */
+    private void checkOpener() {
+        PackageManager.PackageInfo otherApp = PackageManager.isOtherApp(this);
+        findViewById(R.id.stp_ll_opener).setVisibility(otherApp != null ? View.VISIBLE : View.GONE);
+        if (otherApp != null) {
+            // set other app
+            TextView opener = findViewById(R.id.stp_txt_opener);
+            opener.setText(getString(R.string.txt_opener, otherApp.label));
+            findViewById(R.id.stp_btn_opener).setTag(otherApp.packageName);
+        }
+    }
+
+    /**
+     * Sets the properties of the clickable text
+     */
     private void initClickable() {
         TextView txt = findViewById(R.id.stp_txtL_testLink);
         txt.setPaintFlags(txt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -48,7 +66,9 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
      * Sets the visibility of the setAsDefault box
      */
     private void checkAvailability() {
-        findViewById (R.id.stp_ll_setAsDefault).setVisibility( PackageManager.amIAvailable(this) ? View.GONE : View.VISIBLE);
+        boolean b = PackageManager.amIAvailable(this);
+        findViewById(R.id.stp_ll_setAsDefault).setVisibility(b ? View.GONE : View.VISIBLE);
+        findViewById(R.id.stp_ll_testLink).setVisibility(b ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -86,7 +106,7 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
             }
         }
 
-        if(selection_index == 0){
+        if (selection_index == 0) {
             // the selected app wasn't found, remove
             prefs.setApp("");
         }
@@ -107,6 +127,14 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
         app_choose.setOnItemSelectedListener(this);
     }
 
+    private void openSettings(String packageName) {
+//        try {
+//            startActivity(new Intent("com.android.settings.APP_OPEN_BY_DEFAULT_SETTINGS", Uri.parse("package:" + packageName)));
+//        }catch (ActivityNotFoundException e){
+        PackageManager.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + packageName)), R.string.toast_noSettings, this);
+//        }
+    }
+
     // ------------------- onEvents -------------------
 
 
@@ -114,13 +142,24 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
     protected void onResume() {
         super.onResume();
         checkAvailability();
+        checkOpener();
     }
 
     public void onButtonClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.stp_btn_setAsDefault:
                 // open settings screen
-                PackageManager.startActivity(new Intent( Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName())), R.string.toast_noSettings, this);
+                openSettings(getPackageName());
+                break;
+            case R.id.stp_btn_opener:
+                // open default app settings
+                openSettings(view.getTag().toString());
+                break;
+            case R.id.stp_txtL_testLink:
+                // Open youtube link
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.txtL_testLink)));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                PackageManager.startActivity(intent, R.string.toast_noApps, this);
                 break;
         }
     }
@@ -150,13 +189,8 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
      */
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.stp_chkbx_fullscreen:
-                prefs.setFullscreen(((CheckBox) view).isChecked());
-                break;
-            case R.id.stp_txtL_testLink:
-                PackageManager.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.txtL_testLink))), R.string.toast_appNotFound, this);
-                break;
+        if (view.getId() == R.id.stp_chkbx_fullscreen) {
+            prefs.setFullscreen(((CheckBox) view).isChecked());
         }
     }
 }

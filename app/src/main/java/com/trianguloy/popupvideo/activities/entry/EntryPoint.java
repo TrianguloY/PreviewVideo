@@ -1,7 +1,6 @@
 package com.trianguloy.popupvideo.activities.entry;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -80,13 +79,13 @@ public class EntryPoint extends Activity {
 
                 if (intents == null) {
                     // no apps to choose from
-                    Toast.makeText(this, getString(R.string.toast_noapps), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.toast_noApps), Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 PackageManager.startActivity(
                         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toArray(new Parcelable[0])),
-                        R.string.toast_nochooser,
+                        R.string.toast_noChooser,
                         this
                 );
 
@@ -111,7 +110,7 @@ public class EntryPoint extends Activity {
 
                 if (intents == null) {
                     // no apps to choose from
-                    Toast.makeText(this, getString(R.string.toast_noapps), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.toast_noApps), Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -119,7 +118,7 @@ public class EntryPoint extends Activity {
                 Intent chooser = Intent.createChooser(intents.remove(0), getString(R.string.title_chooser));
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toArray(new Parcelable[0]));
 
-                PackageManager.startActivity(chooser, R.string.toast_nochooser, this);
+                PackageManager.startActivity(chooser, R.string.toast_noChooser, this);
 
             }
 
