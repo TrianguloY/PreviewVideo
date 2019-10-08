@@ -12,6 +12,40 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:id="@+id/stp_ll_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/stp_txt_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@android:drawable/stat_notify_error"
+                android:text="@string/txt_instructions" />
+
+            <Button
+                android:id="@+id/stp_btn_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:onClick="onButtonClick"
+                android:paddingLeft="@dimen/padding"
+                android:paddingRight="@dimen/padding"
+                android:text="@string/btn_setAsDefault" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="@dimen/padding"
+                android:layout_marginBottom="@dimen/padding"
+                android:src="@color/colorPrimary"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,20 +76,20 @@
             android:layout_height="wrap_content"
             android:text="@string/chx_fullscreen" />
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_marginTop="@dimen/padding"
-            android:layout_marginBottom="@dimen/padding"
-            android:src="@color/colorPrimary"
-            tools:ignore="ContentDescription" />
-
         <LinearLayout
             android:id="@+id/stp_ll_testLink"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="@dimen/padding"
+                android:layout_marginBottom="@dimen/padding"
+                android:src="@color/colorPrimary"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -73,65 +107,7 @@
                 android:paddingTop="@dimen/padding"
                 android:paddingBottom="@dimen/padding"
                 android:text="@string/txtL_testLink" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/stp_ll_setAsDefault"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@android:drawable/stat_notify_error"
-                android:drawablePadding="@dimen/padding"
-                android:text="@string/txt_setAsDefault" />
-
-            <Button
-                android:id="@+id/stp_btn_setAsDefault"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:onClick="onButtonClick"
-                android:paddingLeft="@dimen/padding"
-                android:paddingRight="@dimen/padding"
-                android:text="@string/btn_setAsDefault" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/stp_ll_opener"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_margin="@dimen/padding"
-                android:src="@color/colorPrimaryDark"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/stp_txt_opener"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@android:drawable/ic_menu_info_details"
-                android:drawablePadding="@dimen/padding"
-                android:text="@string/txt_opener" />
-
-            <Button
-                android:id="@+id/stp_btn_opener"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:onClick="onButtonClick"
-                android:paddingLeft="@dimen/padding"
-                android:paddingRight="@dimen/padding"
-                android:text="@string/btn_setAsDefault" />
         </LinearLayout>
 
     </LinearLayout>

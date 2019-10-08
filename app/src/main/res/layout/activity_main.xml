@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -32,6 +33,14 @@
             android:background="@android:color/background_dark"
             android:scaleType="fitCenter"
             android:src="@drawable/developed_with_youtube" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding"
+            android:gravity="center"
+            android:text="@string/txt_info" />
 
         <Button
             android:id="@+id/m_btn_setup"

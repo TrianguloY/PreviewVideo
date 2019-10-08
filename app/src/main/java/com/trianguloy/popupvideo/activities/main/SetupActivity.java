@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -23,6 +24,10 @@ import java.util.List;
 public class SetupActivity extends Activity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private Preferences prefs;
+    private ArrayAdapter<PackageManager.PackageInfo> adapter;
+
+    private Spinner app_choose;
+    private TextView txt_error;
 
     // ------------------- Initialization -------------------
 
@@ -32,26 +37,44 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
         setContentView(R.layout.activity_setup);
         prefs = new Preferences(this);
 
+        txt_error = findViewById(R.id.stp_txt_error);
+        app_choose = findViewById(R.id.stp_spn_action);
+
         // init things
         initAppSpinner();
         initFullScreen();
         initClickable();
         checkAvailability();
-        checkOpener();
     }
 
     /**
-     * Checks which app is the default
+     * Checks if we are available and which app is the default
      */
-    private void checkOpener() {
-        PackageManager.PackageInfo otherApp = PackageManager.isOtherApp(this);
-        findViewById(R.id.stp_ll_opener).setVisibility(otherApp != null ? View.VISIBLE : View.GONE);
-        if (otherApp != null) {
-            // set other app
-            TextView opener = findViewById(R.id.stp_txt_opener);
-            opener.setText(getString(R.string.txt_opener, otherApp.label));
-            findViewById(R.id.stp_btn_opener).setTag(otherApp.packageName);
+    private void checkAvailability() {
+        boolean error = false;
+
+        // check if we are available
+        if (!PackageManager.amIAvailable(this)) {
+            // we are not available
+            txt_error.setText(R.string.txt_setAsDefault);
+            error = true;
+        } else {
+            // we are available
+
+            // check if other is default
+            PackageManager.PackageInfo otherApp = PackageManager.isOtherApp(this);
+            if (otherApp != null) {
+                // other is default
+                txt_error.setText(getString(R.string.txt_opener, otherApp.label));
+                error = true;
+            }
         }
+
+        if (error) {
+            txt_error.append(getString(R.string.txt_instructions));
+        }
+        findViewById(R.id.stp_ll_error).setVisibility(error ? View.VISIBLE : View.GONE);
+        findViewById(R.id.stp_ll_testLink).setVisibility(error ? View.GONE : View.VISIBLE);
     }
 
     /**
@@ -60,15 +83,6 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
     private void initClickable() {
         TextView txt = findViewById(R.id.stp_txtL_testLink);
         txt.setPaintFlags(txt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-    }
-
-    /**
-     * Sets the visibility of the setAsDefault box
-     */
-    private void checkAvailability() {
-        boolean b = PackageManager.amIAvailable(this);
-        findViewById(R.id.stp_ll_setAsDefault).setVisibility(b ? View.GONE : View.VISIBLE);
-        findViewById(R.id.stp_ll_testLink).setVisibility(b ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -86,7 +100,23 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
      * Inits the spinner
      */
     private void initAppSpinner() {
-        Spinner app_choose = findViewById(R.id.stp_spn_action);
+        // initialize adapter
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
+
+        // configure
+        app_choose.setAdapter(adapter);
+        app_choose.setOnItemSelectedListener(this);
+
+        checkAppSpinner();
+    }
+
+    private void checkAppSpinner() {
+
+        // remove previous
+        adapter.clear();
+
+        // set the none option
+        adapter.add(new PackageManager.PackageInfo(null, getString(R.string.spinner_none)));
 
         // get apps
         List<PackageManager.PackageInfo> otherApps = PackageManager.getOtherApps(
@@ -95,14 +125,14 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
                 this
         );
 
-        // find selection
+        // find selection and add
         int selection_index = 0;
         String selection = prefs.getApp();
         for (int i = 0; i < otherApps.size(); i++) {
             PackageManager.PackageInfo otherApp = otherApps.get(i);
+            adapter.add(otherApp);
             if (otherApp.packageName.equals(selection)) {
-                selection_index = i + 1; // +1 for the none option added below
-                break;
+                selection_index = i + 1; // +1 for the none option added above
             }
         }
 
@@ -111,27 +141,24 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
             prefs.setApp("");
         }
 
-        // set the none option
-        otherApps.add(0, new PackageManager.PackageInfo(null, getString(R.string.spinner_none)));
 
         // for debug only: set the invalid option
         if (BuildConfig.DEBUG)
             otherApps.add(new PackageManager.PackageInfo("invalid", "invalid"));
 
-        // initialize adapter
-        ArrayAdapter<PackageManager.PackageInfo> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, otherApps);
-
-        // configure
-        app_choose.setAdapter(adapter);
         app_choose.setSelection(selection_index);
-        app_choose.setOnItemSelectedListener(this);
     }
 
     private void openSettings(String packageName) {
 //        try {
 //            startActivity(new Intent("com.android.settings.APP_OPEN_BY_DEFAULT_SETTINGS", Uri.parse("package:" + packageName)));
 //        }catch (ActivityNotFoundException e){
-        PackageManager.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + packageName)), R.string.toast_noSettings, this);
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + packageName));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT);
+        }
+        PackageManager.startActivity(intent, R.string.toast_noSettings, this);
 //        }
     }
 
@@ -142,18 +169,14 @@ public class SetupActivity extends Activity implements AdapterView.OnItemSelecte
     protected void onResume() {
         super.onResume();
         checkAvailability();
-        checkOpener();
+        checkAppSpinner();
     }
 
     public void onButtonClick(View view) {
         switch (view.getId()) {
-            case R.id.stp_btn_setAsDefault:
+            case R.id.stp_btn_error:
                 // open settings screen
                 openSettings(getPackageName());
-                break;
-            case R.id.stp_btn_opener:
-                // open default app settings
-                openSettings(view.getTag().toString());
                 break;
             case R.id.stp_txtL_testLink:
                 // Open youtube link
