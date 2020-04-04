@@ -9,7 +9,7 @@
 
     <!-- MainActivity -->
     <string name="a_about">About</string>
-    <string name="txt_info">With this app you can open YouTube videos as an immobile popup in the middle of the screen that is closed automatically when the video ends, or can be closed with a single click on the back button.</string>
+    <string name="txt_info">With this app you can open YouTube videos as an immobile popup in the middle of the screen that is closed automatically when the video ends, or can be closed with a single click on the back button. They will also not be added to your view history (so no more recommendations because someone sent you a goose video). Note that this is not PIP (Picture In Picture) so you can\'t use other apps while previewing.</string>
     <string name="txt_about">"App created by TrianguloY.
 
 Notice: This app is not affiliated with YouTube nor Google. This is a third party app that uses the YouTube Api and doesn't replace any of the YouTube features."</string>
